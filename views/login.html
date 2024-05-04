@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="js/firebase.js" type="module"></script>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="login.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page</title>
+
+</head>
+<body>
+        <div class="header">
+            <div class="greeting">
+                <h1> IIT Mandi Attendance system</h1>
+            </div>
+            <div class="logo">
+            <img src="logo_hires.png">
+            </div>
+            <!-- <div class="nav-links">
+                
+                <ul>
+                    <li> <a href="#"> ABOUT</a></li>
+                    <li> <a href="#"> CONTACT</a></li>       
+                </ul>
+            </div> -->
+            <div class="viml">
+                <img src="viml.jpg" alt="">
+            </div>
+        </div>
+        <div class="box-1">
+            <!-- <form action=""> -->
+                <!-- <h1>Log In Required</h1>
+                <div class="input-box">
+                    <input type="text" placeholder=" Username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder=" Password" required>
+                    <i class='bx bxs-lock-alt' ></i> 
+                </div>
+                <div class="remember-me">
+                    <label"> <input type="checkbox">Remember me</label>
+                </div> -->
+                <button class="submit" onclick="login()">Log in</button>
+    
+            <!-- </form> -->
+        </div>
+        <div class="footer">
+            <div class="bottom-logo">
+                <img src="logo_hires.png" alt="">
+            </div>
+            <div class="footer-content">
+                <p class="Contact">Developed By</p>
+                <p>Group-36</p>
+                <p>Visual Intelligence And Machine Learning Group</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024- Design Practicum, IIT Mandi</p>
+        </div>
+    <script>
+        async function login() {
+          const auth = firebaseAuth.getAuth();
+          const provider = new firebaseAuth.GoogleAuthProvider()
+
+          firebaseAuth.setPersistence(auth, firebaseAuth.browserSessionPersistence)
+            .then(() => {
+                console.log("hi");
+                return firebaseAuth
+                  .signInWithPopup(auth, provider)
+                  .then((result) => {
+                    // The signed-in user info.
+                    const user = result.user;
+                    // const token1 = auth.currentUser
+                    auth.currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+                        console.log(idToken.toString());
+                        localStorage.setItem("idtoken",idToken)
+                        window.location = "index.html";
+                        // Send token to your backend via HTTPS
+                        // ...
+                    }).catch(function(error) {
+                        console.log(error);
+                        // Handle error
+                    });
+                    // localStorage.setItem("idtoken", token.toString())
+                    // IdP data available using getAdditionalUserInfo(result)
+                    // window.location = "/index";
+                  })
+                  .catch((error) => {
+                    // Handle Errors here.
+                    console.log(error)
+                    // const errorCode = error.code;
+                    // const errorMessage = error.message;
+                    // // The email of the user's account used.
+                    // // const email = error.customData.email;
+                    // // The AuthCredential type that was used.
+                    // const credential = GoogleAuthProvider.credentialFromError(error);
+                    // ...
+                  });
+            })
+
+        }
+      </script>
+</body>
+</html>

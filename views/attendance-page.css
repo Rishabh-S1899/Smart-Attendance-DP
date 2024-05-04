@@ -1,0 +1,307 @@
+/* Resetting browser defaults */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+/* * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    width: 100%;
+    padding-bottom: 20px; /* Add padding to bottom */
+    /* margin:0;
+    padding: 0;
+}
+#courseHeading {
+    font-size: 28px;
+    font-weight: bold;
+
+}
+header {
+    background-color: #1fb257;
+    color: #fff;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid #001a33; /* Add a bottom border */
+    /* margin-top: 0;
+    margin: bottom 500px;
+} */
+
+/* at the end #shru */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    width: 100%; 
+    margin:0;
+}
+#courseHeading {
+    font-size: 28px;
+    font-weight: bold;
+}
+.header {
+    background-color: #003366;
+    color: #fff;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.greeting h1{
+  padding-left: 465px;
+  font-size: 36px;
+}
+.logo{
+  position: absolute;
+  left: 20px;
+}
+.logo img {
+  width: 100px;
+}
+.viml img{
+    width: 100px;
+    
+}
+.greeting p {
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 5px;
+}
+header {
+    background-color: #003366;
+    margin-top: 10px;
+    color: #fff;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+     border-bottom: 2px solid #001a33; /*Add a bottom border */
+    position: relative; /* Position relative for absolute positioning of the button */
+}
+.footer {
+    background-color: #003366;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  .footer img{
+    width: 180px;
+    padding: 0%;
+  }
+  .bottom-logo{
+    float: left;
+    width: 150px;
+    padding-left: 50px;
+  }
+  .footer-content{
+    position: relative;
+    display: inline-block;
+    width: 900px;
+    padding-top: 20px;
+    font-size: 18px;
+    padding-left: 600px;
+  }
+  .footer-content p {
+    padding-bottom: 5px;
+  }
+  .Contact{
+    font-size: 28px;
+    font-weight:bold;
+  }
+  .copyright{
+    background-color: black;
+    color: #aaa;
+    text-align: center;
+    padding: 10px;
+  }
+
+
+
+/* Style for the back button */
+#backButton {
+    padding: 10px 20px;
+    margin-left: 30px;
+    margin-bottom: 20px;
+    background-color: #002040; /*color change*/
+    color: #ccc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s; /* Transition for hover effect */
+    text-decoration: underline; /* Add underline */
+}
+
+/* Hover effect for the back button */
+#backButton:hover {
+    background-color: #001a33; /* Darker background on hover */
+    /* color: #ffcc00; Lighter text color on hover */
+    color: #ffcc00; /* Lighter text color on hover */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add slight shadow on hover */
+}
+
+
+/* by shru*/
+#attendance-container{
+    margin:20px 50px 20px 50px;
+    min-height: 370px;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+/* Inside the attendance-page.css file */
+.attendance-status {
+    width: 100%; /* Set the width to 100% to match the block size */
+    
+    padding: 8px; /* Add padding for better appearance */
+    font-size: inherit; /* Inherit font size from parent */
+    border: 1px solid #ccc; /* Add border for better visibility */
+    border-radius: 5px; /* Add border-radius for rounded corners */
+    background-color: #fff; /* Set background color */
+}
+
+
+/* Attendance table */
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px; 
+}
+
+.attendance-table th,
+.attendance-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+} 
+
+.attendance-table th {
+    background-color: #003366;
+    color: #fff;
+    font-weight: bold;
+}
+
+.attendance-table td {
+    background-color: #fff;
+    color: #333;
+} 
+
+/* Back to calendar button */
+button { 
+    padding: 10px 20px;
+    background-color: #003366;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #001a33;
+}   
+/*delete button*/
+
+/* Position the delete buttons below each image */
+.delete-image-btn {
+    display: block;
+    margin: 10px auto;
+}
+
+
+
+/* CSS */
+
+
+
+/* Reset default margin and padding */
+/* Resetting browser defaults */
+/* Reset default margin and padding */
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styles */
+/* body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding-top: 50px; /* Adjusted padding to create space between header and content */
+
+
+/* Header styles */
+/* header {
+    background-color: #003366;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure header is above other content */
+
+
+/* Main container styles */
+/* #attendance-container {
+    margin-top: 70px; /* Adjusted margin-top to create space between header and content */
+    /* padding: 20px;
+} */ 
+
+/* Attendance table styles */
+/* .attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Add margin to create space between table and other content */
+/* }
+
+.attendance-table th,
+.attendance-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.attendance-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+/* Back button styles */
+/* button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px; Add margin to create space between button and other content
+    cursor: pointer;
+} */
+
+/* button:hover {
+    background-color: #555;
+} */
+
+/* Responsive styles */
+/* @media screen and (max-width: 600px) {
+    header {
+        padding: 5px;
+    }
+    .attendance-table th,
+    .attendance-table td {
+        padding: 6px;
+    }
+    button {
+        padding: 8px 16px;
+    }
+} */ 

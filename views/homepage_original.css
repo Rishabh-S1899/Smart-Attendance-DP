@@ -1,0 +1,138 @@
+/* Resetting browser defaults */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+body {
+    overflow: hidden; /* Disable scroll */
+}
+
+header {
+    background-color: #003366;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    width: 100px;
+}
+
+.greeting p {
+    font-size: 14px;
+    color: #aaa;
+    margin-top: 5px;
+}
+
+
+.greeting h1 {
+    font-size: 24px;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    padding: 20px;
+    overflow-y: auto; /* Enable scroll only if necessary */
+    max-height: calc(100vh - 200px); /* Set max height to fit within viewport */
+
+}
+
+.search-bar {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-bar input[type="search"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.search-bar i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    font-size: 20px;
+    color: #555;
+    cursor: pointer;
+}
+.course {
+    background-color: #fff; /* Change background color to white */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+    transition: box-shadow 0.3s ease; /* Add transition for smoother hover effect */
+}
+
+.course:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase box shadow on hover */
+}
+
+/* .course {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+} */
+.course-list {
+    margin-top: 20px; /* Increase margin */
+    margin-bottom: 20px; /* Add margin at the bottom for "See All Courses" button */
+}
+
+.course a {
+    color: #333;
+    text-decoration: none;
+}
+
+.course a:hover {
+    text-decoration: underline;
+}
+
+.see-all-courses {
+    text-align: center;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.see-all-courses a {
+    text-decoration: none;
+    color: #003366;
+    font-weight: bold;
+}
+
+.see-all-courses a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    background-color: #003366;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}

@@ -1,0 +1,139 @@
+/* Index.css */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+
+/* General Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+/* Header Styles */
+.header {
+  background-color: #003366;
+  color: #fff;
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.greeting h1{
+padding-left: 465px;
+font-size: 36px;
+}
+.logo{
+position: absolute;
+left: 20px;
+}
+.logo img {
+width: 100px;
+}
+.viml img{
+  width: 100px;
+}
+.greeting p {
+font-size: 14px;
+color: #aaa;
+margin-top: 5px;
+}
+
+/* Container Styles */
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 255px;
+}
+
+h2 {
+  margin-top:5px;
+  color: #003366;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Course List Styles */
+#courseList {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 24px;
+  cursor: pointer;
+}
+
+#courseList option {
+  background-color: #fff;
+  color: #333;
+  padding: 10px;
+}
+
+#courseList option:hover {
+  background-color: #f5f5f5;
+}
+
+/* Enroll Button Styles */
+#enrollButton {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  background-color: #003366;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#enrollButton:hover {
+  background-color: #003366;
+}
+.footer {
+  background-color: #003366;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.footer img{
+  width: 180px;
+  padding: 0%;
+}
+.bottom-logo{
+  float: left;
+  width: 150px;
+  padding-left: 50px;
+}
+.footer-content{
+  position: relative;
+  width: 900px;
+  padding-top: 0px;
+  font-size: 18px;
+  padding-left: 600px;
+}
+.Contact{
+  font-size: 28px;
+  font-weight:bold;
+}
+.copyright{
+  background-color: black;
+  color: #aaa;
+  text-align: center;
+  padding: 10px;
+}

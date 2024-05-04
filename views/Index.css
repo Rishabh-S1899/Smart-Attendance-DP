@@ -1,0 +1,183 @@
+/* Resetting browser defaults */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0%;
+  }
+  
+.header {
+  background-color: #003366;
+  color: #fff;
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.greeting h1{
+  padding-left: 465px;
+  font-size: 36px;
+}
+.logo{
+  position: absolute;
+  left: 20px;
+}
+.logo img {
+  width: 100px;
+}
+.viml img{
+    width: 100px;
+    
+}
+.greeting p {
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 5px;
+}
+  
+.container {
+  padding: 20px;
+  overflow-y: auto; 
+  max-height: calc(100vh - 200px);
+  min-height: 570px;
+}
+.container h2{
+  font-weight: 600;
+  font-size: 24px;
+}
+  
+  .course {
+    background-color:#fff;/* Change background color to white */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+    transition: box-shadow 0.3s ease; /* Add transition for smoother hover effect */
+  }
+  
+  .course:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase box shadow on hover */
+  }
+  
+  .course-list {
+    margin-top: 20px; /* Increase margin */
+    margin-bottom: 20px; /* Add margin at the bottom for "See All Courses" button */
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .buttons button {
+    background-color: #003366; /* Blue background color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 15px 30px; /* Increase button size */
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 0 20px;
+    transition: background-color 0.3s ease; /* Add transition for hover effect */
+  
+  }
+  
+  .buttons button:hover {
+    background-color: #002a54; /* Darker blue on hover */
+  }
+  #Uploaddata{
+    background-color: #003366;
+    color: white;
+    padding: 15px 40px;
+    font-size: 16px;
+    margin-top: 10px;
+    font-family: "Poppins", sans-serif;
+    border-style: none;
+    border-radius: 10px;
+  
+  }
+  #Unenrol{
+    background-color: #003366;
+    color: white;
+    padding: 15px 40px;
+    font-size: 16px;
+    margin-top: 10px;
+    font-family: "Poppins", sans-serif;
+    border-style: none;
+    border-radius: 10px;
+  
+  }
+  #logout{
+    background-color: #003366;
+    color: white;
+    padding: 15px 40px;
+    font-size: 16px;
+    margin-top: 10px;
+    font-family: "Poppins", sans-serif;
+    border-style: none;
+    border-radius: 10px;
+    margin-left: 1500px;
+    margin-bottom: 10px;
+  }
+  #logout a{
+    color: white;
+    text-decoration: none;
+
+  }
+  #registerButton{
+    background-color: #003366;
+    color: white;
+    padding: 15px 40px;
+    font-size: 16px;
+    margin-top: 10px;
+    font-family: "Poppins", sans-serif;
+    border-style: none;
+    border-radius: 10px;
+  
+  }
+  footer {
+    background-color: #003366;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  footer img{
+    width: 180px;
+    padding: 0%;
+  }
+  .bottom-logo{
+    float: left;
+    width: 150px;
+    padding-left: 50px;
+  }
+  .footer-content{
+    position: relative;
+    display: inline-block;
+    width: 900px;
+    padding-top: 20px;
+    font-size: 18px;
+    padding-left: 600px;
+  }
+  .footer-content p {
+    padding-bottom: 5px;
+  }
+  .Contact{
+    font-size: 28px;
+    font-weight:bold;
+  }
+  .copyright{
+    background-color: black;
+    color: #aaa;
+    text-align: center;
+    padding: 10px;
+  }

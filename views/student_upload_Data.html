@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>course-portal</title>
+    <link rel="stylesheet" href="student_upload_DATA.css">
+</head>
+<body>
+    <div class="header">
+        <div class="greeting">
+            <h1> IIT Mandi Attendance system</h1>
+        </div>
+        <div class="logo">
+        <img src="logo_hires.png">
+        </div>
+        <!-- <div class="nav-links">
+            
+            <ul>
+                <li> <a href="#"> ABOUT</a></li>
+                <li> <a href="#"> CONTACT</a></li>       
+            </ul>
+        </div> -->
+        <div class="viml">
+            <img src="viml.jpg" alt="">
+        </div>
+    </div>
+    
+    <main>
+        <section class="left">
+            <div class="tag">
+                <h1 id="courseHeading">Student Details</h1>
+            </div>
+            <h3>Enter the follwing Details</h3>
+            <form id="student data">
+                <!-- <div class="form-group">
+                    <label for="StudentName">Student Name:</label>
+                    <input type="text" id="StudentName" required>
+                </div> -->
+                <br>
+                <div class="form-group">
+                    <label for="images">Upload Image:</label>
+                    <input type="file" id="images" accept="image/*" required >
+                </div>
+                <br>
+                <div class="confirmation">
+                    <input type="checkbox" id="confirmation">
+                    <label for="confirmation">I confirm above details.</label>
+                </div>
+                <br>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    </main>
+    <div class="footer">
+        <div class="bottom-logo">
+            <img src="logo_hires.png" alt="">
+        </div>
+        <div class="footer-content">
+            <p class="Contact">Developed By :</p>
+            <p>Group-36</p>
+            <p>Visual Intelligence and Machine Learning Group</p>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>&copy; 2024- Design Practicum, IIT Mandi</p>
+    </div>
+     
+</body>
+<script src="js/test.js"></script>
+
+<!-- <script>
+    await fetch(/api/get_attendance, {
+        headers: {
+            "Authorization": Bearer ${localStorage.getItem("idtoken")}
+        }
+    })
+</script> -->
+</html>

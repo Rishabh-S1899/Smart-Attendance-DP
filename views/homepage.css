@@ -1,0 +1,175 @@
+/* Resetting browser defaults */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+.header {
+    background-color: #003366;
+    color: #fff;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.greeting h1{
+  padding-left: 465px;
+  font-size: 36px;
+}
+.logo{
+  position: absolute;
+  left: 20px;
+}
+.logo img {
+  width: 100px;
+}
+.nav-links ul {
+    list-style-type: none;
+}
+
+.nav-links ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.nav-links ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+}
+.nav-links ul li a:hover{
+  font-size: 20px;
+  transition: 0.2s;
+}
+.viml img{
+    width: 100px;
+    
+}
+
+
+.greeting p {
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 5px;
+}
+
+.container {
+    padding: 20px;
+    overflow-y: auto; /* Enable scroll only if necessary */
+    max-height: calc(100vh - 200px); /* Set max height to fit within viewport */
+    min-height: 550px;
+
+}
+
+.search-bar {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-bar input[type="search"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.search-bar i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    font-size: 20px;
+    color: #555;
+    cursor: pointer;
+}
+.course {
+    background-color: #fff; /* Change background color to white */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+    transition: box-shadow 0.3s ease; /* Add transition for smoother hover effect */
+}
+
+.course:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase box shadow on hover */
+}
+
+/* .course {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+} */
+.course-list {
+    margin-top: 20px; /* Increase margin */
+    margin-bottom: 20px; /* Add margin at the bottom for "See All Courses" button */
+}
+
+.course a {
+    color: #333;
+    text-decoration: none;
+}
+
+.course a:hover {
+    text-decoration: underline;
+}
+
+.see-all-courses {
+    text-align: center;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.see-all-courses a {
+    text-decoration: none;
+    color: #003366;
+    font-weight: bold;
+}
+
+.see-all-courses a:hover {
+    text-decoration: underline;
+}
+
+.footer {
+    background-color: #003366;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 30px;
+  }
+  .footer img{
+    width: 180px;
+    padding: 0%;
+  }
+  .bottom-logo{
+    float: left;
+    width: 150px;
+    padding-left: 50px;
+  }
+  .footer-content{
+    position: relative;
+    display: inline-block;
+    width: 900px;
+    padding-top: 20px;
+    font-size: 18px;
+    padding-left: 600px;
+  }
+  .footer-content p {
+    padding-bottom: 5px;
+  }
+  .Contact{
+    font-size: 28px;
+    font-weight:bold;
+  }
+  .copyright{
+    background-color: black;
+    color: #aaa;
+    text-align: center;
+    padding: 10px;
+  }

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unenroll From Course</title>
+    <link rel="stylesheet" href="course_registration.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="student_unenrol_course.css">
+</head>
+<body>
+    <div class="header">
+        <div class="greeting">
+            <h1> IIT Mandi Attendance system</h1>
+        </div>
+        <div class="logo">
+        <img src="logo_hires.png">
+        </div>
+        <!-- <div class="nav-links">
+            
+            <ul>
+                <li> <a href="#"> ABOUT</a></li>
+                <li> <a href="#"> CONTACT</a></li>       
+            </ul>
+        </div> -->
+        <div class="viml">
+            <img src="viml.jpg" alt="">
+        </div>
+    </div>
+    <div class="container">
+        <h2>Course List</h2>
+        <select id="courseList">
+            <option disabled selected>Select a course</option>
+        </select>
+        <button id="Unenrolbutton">Unenrol</button>
+        <script>
+            // Function to display a centered pop-up window
+            function showPopup(message) {
+                const popup = document.createElement('div');
+                popup.classList.add('popup');
+                popup.innerHTML = `
+                    <span class="popup-message">${message}</span>
+                    <button class="close-button">&times;</button>
+                `;
+                document.body.appendChild(popup);
+
+                // Close the popup and reload the page when the close button is clicked
+                const closeButton = popup.querySelector('.close-button');
+                closeButton.addEventListener('click', () => {
+                    document.body.removeChild(popup);
+                    location.reload();
+                });
+            }
+            // Fetch course names from the API
+            fetch('/api/unenrol_courses',{
+                headers: {
+                // 'Content-Type': 'application/json'
+                Authorization: `Bearer ${localStorage.getItem("idtoken")}`
+                }
+            })
+                .then(response => response.json())
+                .then(courses => {
+                    const courseList = document.getElementById('courseList');
+                    courses.forEach(course => { 
+                        const option = document.createElement('option');
+                        option.value = course.course_id;
+                        option.text = course.course_id;
+                        courseList.add(option);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+
+            // Add an event listener to the unenrol button
+            document.getElementById('Unenrolbutton').addEventListener('click', () => {
+                const selectedCourse = document.getElementById('courseList').value;
+                // Check if a course is selected before unenrolling
+                if (selectedCourse === 'Select a course') {
+                    showPopup('Please select a course');
+                    return;
+                }
+                // const studentId = 'B22065'; // Replace with the actual student ID
+
+                // Send the selected course and student ID to the backend
+                fetch('/api/unenrol', {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("idtoken")}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ courseName: selectedCourse })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Display a centered pop-up window with the response message
+                        showPopup(data.message);
+                        window.location.href = 'student_front.html';
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        </script>
+    </div>
+    <div class="footer">
+        <div class="bottom-logo">
+            <img src="logo_hires.png" alt="">
+        </div>
+        <div class="footer-content">
+            <p class="Contact">Developed By :</p>
+            <p>Group-36</p>
+            <p>Visual Intelligence and Machine Learning Group</p>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>&copy; 2024- Design Practicum, IIT Mandi</p>
+    </div>
+    </body>
+    
+</html>

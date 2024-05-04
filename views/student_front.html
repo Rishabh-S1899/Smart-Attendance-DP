@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IIT Mandi Attendance System</title>
+
+    <link rel="stylesheet" href="Index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="greeting">
+            <h1> IIT Mandi Attendance system</h1>
+        </div>
+        <div class="logo">
+        <img src="logo_hires.png">
+        </div>
+        <!-- <div class="nav-links">
+            
+            <ul>
+                <li> <a href="#"> ABOUT</a></li>
+                <li> <a href="#"> CONTACT</a></li>       
+            </ul>
+        </div> -->
+        <div class="viml">
+            <img src="viml.jpg" alt="">
+        </div>
+    </div>
+    <div class="container">
+        <h2>Courses</h2>
+        <div id="courseList"></div>
+        <button id="registerButton">Register Courses</button>
+        <button id="Uploaddata">Upload Data</button>
+        <button id="Unenrol">Unenrol</button>
+        
+    </div>
+    <button id="logout">Log out</button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the studentId from the URL query parameter or from localStorage
+            // const studentId = new URLSearchParams(window.location.search).get('studentId') || localStorage.getItem('studentId');
+            // const studentId='B22141';
+            fetchStudentCourses();
+            // if (studentId) {
+            //     console.log(studentId);
+            //     fetchStudentCourses(studentId);
+            // } else {
+            //     alert('Please provide a valid studentId');
+            // }
+        });
+
+        function fetchStudentCourses() {
+                    fetch(`/api/student_courses_display`, {
+                        headers: {
+                        Authorization: `Bearer ${localStorage.getItem("idtoken")}`
+                        // 'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(courses => {
+                    console.log('Courses:', courses);
+                    const courseList = document.getElementById('courseList');
+                    courseList.innerHTML = ''; // Clear the course list before populating
+                    if (courses.length === 0) {
+                        courseList.innerHTML = '<br><h4>You have not enrolled in any course!</h4><br>';
+                    } else {
+                        courses.forEach(course => {
+                        const courseElem = document.createElement('div');
+                        courseElem.classList.add('course');
+                        courseElem.textContent = course.course_id; // Use course.course_id instead of course.Course_Name
+                        courseElem.addEventListener('click', () => {
+                        window.location.href = `course.html?courseName=${encodeURIComponent(course.course_id)}`;
+                        });
+                        courseList.appendChild(courseElem);
+                        });
+                    }
+                    })
+                    .catch(error => console.error('Error fetching courses:', error));
+        }
+        document.getElementById('registerButton').addEventListener('click', function() {
+            // Navigate to the register.html page
+            window.location.href = 'student_Course_registration.html';
+        });
+        document.getElementById('Uploaddata').addEventListener('click',function(){
+            window.location.href='student_upload_data.html';
+        });
+        document.getElementById('Unenrol').addEventListener('click', function() {
+            window.location.href = 'student_unenrol_course.html';
+        
+        });
+        document.getElementById('logout').addEventListener('click', function() {
+            window.location.href = 'login.html';
+        });
+    </script>
+    <footer>
+        <div class="bottom-logo">
+            <img src="logo_hires.png" alt="">
+        </div>
+        <div class="footer-content">
+            <p class="Contact">Developed By :</p>
+            <p>Group-36</p>
+            <p>Visual Intelligence and Machine Learning Group</p>
+        </div>
+    </footer>
+    <div class="copyright">
+        <p>&copy; 2024- Design Practicum, IIT Mandi</p>
+    </div>
+</body>
+</html>
+
+<!-- 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IIT Mandi Attendance System</title>
+    <link rel="stylesheet" href="Index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="greeting">
+            <h1>IIT Mandi Attendance System</h1>
+        </div>
+    </header>
+    <div class="container">
+        <h2>Courses</h2>
+        <div id="courseList"></div>
+        <button id="registerButton">Register Courses</button>
+        <button id="Uploaddata">Upload Data</button>
+        <button id="Unenrol">Unenrol</button>
+    </div>
+    <footer>
+        <p>&copy; 2024 College Attendance System</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const studentId = 'B22065';
+            fetchStudentCourses(studentId);
+        });
+
+        function fetchStudentCourses(studentId) {
+            fetch(`/api/student-courses`)
+                .then(response => response.json())
+                .then(courses => {
+                    const courseList = document.getElementById('courseList');
+                    courseList.innerHTML = ''; // Clear the course list before populating
+
+                    if (courses.length === 0) {
+                        courseList.innerHTML = '<br><h4>You have not enrolled in any course!</h4><br>';
+                    } else {
+                        courses.forEach(course => {
+                            const courseElem = document.createElement('div');
+                            courseElem.classList.add('course');
+                            courseElem.textContent = course.course_id;
+                            courseElem.addEventListener('click', () => {
+                                window.location.href = `course.html?courseName=${encodeURIComponent(course.course_id)}`;
+                            });
+                            courseList.appendChild(courseElem);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching courses:', error));
+        }
+
+        document.getElementById('registerButton').addEventListener('click', function() {
+            window.location.href = 'Course_registration.html';
+        });
+
+        document.getElementById('Uploaddata').addEventListener('click', function() {
+            window.location.href = 'upload_data.html';
+        });
+
+        document.getElementById('Unenrol').addEventListener('click', function() {
+            window.location.href = 'unenrol_course.html';
+        });
+    </script>
+</body>
+</html> -->
