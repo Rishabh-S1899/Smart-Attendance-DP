@@ -60,7 +60,7 @@ const db = mysql.createConnection({
 ```
 Replace the placeholder values with your actual database credentials.
 
-4. **Start the application
+4. **Start the application**
 
 Run the following command to start the application:
 ```
