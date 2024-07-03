@@ -39,7 +39,7 @@ Follow these steps to set up and run the application:
 
 Run the following command in the project root directory:
 ```
-   npm install
+npm install
 ```
 
 2. **Set up Firebase credentials**
@@ -51,12 +51,12 @@ Save the `firebase-credentials.json` file to the project root folder. This file 
 Open `app.js` and update the database credentials. Look for a section similar to this:
 
 ```javascript
-const dbConfig = {
-  host: 'your_host',
-  user: 'your_username',
-  password: 'your_password',
-  database: 'your_database_name'
-};
+const db = mysql.createConnection({
+  host : 'localhost',
+  user : 'root',
+  password : 'your_password',
+  database : 'your_database'
+})
 ```
 Replace the placeholder values with your actual database credentials.
 
