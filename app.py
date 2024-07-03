@@ -26,28 +26,19 @@ warnings.filterwarnings("ignore")
 @app.route('/upload_video', methods=['POST'])
 def upload_video():
     try:
-        # Get the video from the request
         video_base64 = request.json['video']
         video_buffer = np.frombuffer(base64.b64decode(video_base64), dtype=np.uint8)
-
-        # Create a temporary file for the video
         with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as temp_video:
             temp_video.write(video_buffer)
             temp_video_path = temp_video.name
-
-        # Read the video
         video_capture = cv2.VideoCapture(temp_video_path)
 
         all_frame_features = []
 
         while True:
-            # Read a frame from the video
             ret, frame = video_capture.read()
             if not ret:
-                # No more frames left
                 break
-
-            # Perform face detection and encoding on each frame
             face_locations = face_recognition.face_locations(frame)
             all_face_encodings = face_recognition.face_encodings(frame, face_locations)
             print(len(all_face_encodings))
@@ -61,7 +52,6 @@ def upload_video():
                 img_str = base64.b64encode(buffered.getvalue())
                 all_frame_features.append([img_str.decode('utf-8'), face_encoding.tolist()])
 
-        # Release the video capture object
         video_capture.release()
 
         # Remove the temporary video file
@@ -73,51 +63,9 @@ def upload_video():
     except Exception as e:
         return jsonify({'error': str(e)})
 
-        #     faces = detector.detect_faces(frame)
-        #     face_list = []
-        #     for i, face in enumerate(faces):
-        #         x, y, width, height = face['box']
-        #         face_image = frame[y:y+height, x:x+width]
-        #         cv2.imwrite(f'face_{i}_{k}.jpg', face_image)
-        #         face_list.append(f'face_{i}_{k}.jpg')
-        #     face_feature = {}
-        #     for i in face_list:
-        #         img = str(i)
-        #         image = cv2.imread(img)
-        #         _, encoded_image = cv2.imencode('.jpg', image)
-        #         encoded_image_base64 = base64.b64encode(encoded_image).decode('utf-8')
-        #         inputs = image_processor(image, return_tensors="pt").to(device)
-        #         with torch.no_grad():
-        #             outputs = model(**inputs)
-        #             last_hidden_states = outputs.pooler_output
-        #             print(f"last hidden states shape is {last_hidden_states.shape}")
-        #             lsh = last_hidden_states.cpu().tolist()
-        #             lsh = lsh[0]
-        #             face_feature[encoded_image_base64] = lsh
-        #     list_of_lists = []
-        #     for key, value in face_feature.items():
-        #         sublist = [key, value]
-        #         list_of_lists.append(sublist)
-        #     print(f"frame {k} done")
-        #     all_frame_features.extend(list_of_lists)
-        # # Release the video capture object
-        # video_capture.release()
-        # os.unlink(temp_video_path)
-        # print(f'This is shape of 0th {len(all_frame_features[0])}')
-        # print(f'This is shape {len(all_frame_features)}')
-        # return jsonify(all_frame_features)
-        # return "Hi"
-
-    # except Exception as e:
-    #     print(f"An error occurred: {e}")
-    #     return jsonify({"error": str(e)}), 500
-
 @app.route('/upload', methods=['POST'])
 def upload_image():
     try:
-                # image_processor = AutoImageProcessor.from_pretrained("google/efficientnet-b7")
-                # model = EfficientNetModel.from_pretrained("google/efficientnet-b7",output_hidden_states=True)
-                # detector = MTCNN()
         image_base64 = request.json['image']
         image_buffer = np.frombuffer(base64.b64decode(image_base64), dtype=np.uint8)
         image = cv2.imdecode(image_buffer, flags=cv2.IMREAD_COLOR)
@@ -168,36 +116,6 @@ def student_upload_image():
         embed=all_face_encodings[0].tolist()
 
         return embed
-        # image_processor = AutoImageProcessor.from_pretrained("google/efficientnet-b7")
-        # model = EfficientNetModel.from_pretrained("google/efficientnet-b7",output_hidden_states=True)
-        # detector = MTCNN()
-        # image_base64 = request.json['image']
-        # image_buffer = np.frombuffer(base64.b64decode(image_base64), dtype=np.uint8)
-        # image = cv2.imdecode(image_buffer, flags=cv2.IMREAD_COLOR)
-        # print("hi")
-        # faces = detector.detect_faces(image)
-
-        # for i,face in enumerate(faces):
-        #     x, y, width, height = face['box']
-        #     face_image = image[y:y+height, x:x+width]
-
-        # print("yo")
-        # _, encoded_image = cv2.imencode('.jpg', face_image)
-        # encoded_image_base64 = base64.b64encode(encoded_image).decode('utf-8')
-        # inputs = image_processor(face_image, return_tensors="pt")
-        # input_img=inputs
-        # with torch.no_grad():
-        #     outputs = model(**input_img)
-        # last_hidden_states = outputs.pooler_output
-        # print(last_hidden_states.shape)
-        # lsh=last_hidden_states.tolist()
-        # lsh = lsh[0]
-        # # face_feature[encoded_image_base64]=lsh 
-
-        # print(lsh)
-        # # lsh_string=''.join(map(str, lsh))
-        # return lsh
-        # return "hi"
     except Exception as e:
         print("Error has been executed")
         return str(e), 400
