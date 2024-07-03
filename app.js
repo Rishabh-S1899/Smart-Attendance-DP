@@ -39,27 +39,10 @@ db.connect(err =>{
     console.log('connected to db');
 })
 
-
-
 router.use(authenticate);
-
-// router.get('/index',(req,res)=>{
-//   console.log(req.query);
-//   res.sendFile(path.join(__dirname, 'views', 'index.html'));
-// });
-
-
-// // Route to serve course-portal.html
-// router.get('/course-portal.html', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'views', 'course-portal.html'));
-// });
-
 
 router.post('/verify_attendance' ,(req,res)=>{
   const { year, month, date, courseName } = req.query;
-  // if (req.email.split("@")[1] !== 'iitmandi.ac.in') {
-  //   return res.status(401).json({ message: 'User is not authenticated.'});
-  // }
   let sql = `
       SELECT * FROM ${courseName}
       WHERE attendance_date = '${year}-${month}-${date}' ;
@@ -131,7 +114,6 @@ router.post('/verify_attendance' ,(req,res)=>{
                       res.status(500).json({ error: 'Internal Server Error' });
                   } else {
                       console.log('vector successfully updated:', result);
-                      // res.json({ message: 'vector successfully updated' });
                   }
               });
             }
@@ -159,22 +141,12 @@ router.post('/update_verify_column', (req,res) => {
   })
 })
 
-
-
 router.post('/update-attendance', (req, res) => {
   const { courseName, studentId, newStatus } = req.body;
 
-  // Check if the course name, student ID, and new status are provided
   if (!courseName || !studentId || !newStatus) {
       return res.status(400).json({ error: 'Course name, student ID, and new status are required' });
   }
-
-  // // Check if the new status is valid (P or A)
-  // if (newStatus !== 'P' && newStatus !== 'A') {
-  //     return res.status(400).json({ error: 'Invalid new status. It should be either P or A' });
-  // }
-
-  // Update the attendance status in the corresponding course table
   const sql = `
       UPDATE ${courseName} 
       SET p_or_a = ?
@@ -193,14 +165,12 @@ router.post('/update-attendance', (req, res) => {
 router.get('/attendance-all-dates', (req, res) => {
   const { courseName } = req.query;
 
-  // Get today's date
   const today = new Date();
   const year = today.getFullYear();
   const month = (today.getMonth() + 1).toString().padStart(2, '0');
   const date = today.getDate().toString().padStart(2, '0');
   const currentDate = `${year}-${month}-${date}`;
 
-  // Construct SQL query to fetch attendance data for all dates till today's date
   const sql = `
       SELECT student_id, attendance_date, p_or_a
       FROM ${courseName}
@@ -215,16 +185,11 @@ router.get('/attendance-all-dates', (req, res) => {
           
                     
             const attendanceData = results.reduce((acc, { student_id, attendance_date, p_or_a }) => {
-              // Convert date to a string in YYYY-MM-DD format
               const formattedDate = attendance_date.toISOString().split('T')[0];
               
-              // Initialize the date object if not exists
               acc[formattedDate] = acc[formattedDate] || {};
-              // Add attendance data for the student
+
               acc[formattedDate][student_id] = p_or_a;
-              
-             
-        
               return acc;
           }, {});
           console.log(attendanceData);
@@ -236,377 +201,48 @@ router.get('/attendance-all-dates', (req, res) => {
 
 router.get('/attendance', (req, res) => {
   const { year, month, date, courseName } = req.query;
-
-  // Modify this SQL query to fetch attendance data based on the provided parameters
   
   const sql = `
       SELECT * FROM ${courseName}
       WHERE attendance_date = '${year}-${month}-${date}' ;
   `;
-  // console.log(sql);
   
   db.query(sql, [date], (err, results) => {
       if (err) {
           console.error('Error fetching attendance data:', err);
           res.status(500).json({ error: 'Internal Server Error' });
       } else {
-          // console.log(results);
           res.json(results);
       }
   });
 });
 
-// router.post('/delete_image', (req, res) => {
-//   const { courseName, studentId, imageNumber } = req.body;
-
-//   // Construct the column name based on the image number
-//   const columnName = `pic_${imageNumber}`;
-
-//   // SQL query to update the image column to NULL
-//   const sql = `
-//       UPDATE ${courseName}
-//       SET ${columnName} = NULL
-//       WHERE student_id = ?
-//   `;
-
-//   // Execute the SQL query with the provided student ID
-//   db.query(sql, [studentId], (err, result) => {
-//       if (err) {
-//           console.error('Error deleting image:', err);
-//           res.status(500).json({ error: 'Internal Server Error' });
-//       } else {
-//           console.log('Image deleted successfully:', result);
-//           res.json({ message: 'Image deleted successfully' });
-//       }
-//   });
-// });
-
-// router.post('/delete-image', (req, res) => {
-//   const { courseName, studentId, imageNumber } = req.body;
-
-//   // Construct the column name based on the image number
-//   const columnName = `pic_${imageNumber}`;
-
-//   // Start from the deleted column up to the second last column
-//   for (let i = imageNumber; i < 5; i++) {
-//     const currentColumnName = `pic_${i}`;
-//     const nextColumnName = `pic_${i + 1}`;
-
-//     // SQL query to fetch the value of the next column
-//     const fetchNextImageSql = `
-//         SELECT ${nextColumnName}
-//         FROM ${courseName}
-//         WHERE student_id = ?
-//     `;
-
-//     // Execute the SQL query to fetch the value of the next column
-//     db.query(fetchNextImageSql, [studentId], (fetchErr, fetchResult) => {
-//       if (fetchErr) {
-//         console.error('Error fetching next image path:', fetchErr);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//         return;
-//       }
-
-//       // Get the path of the next image from the fetched result
-//       const nextImagePath = fetchResult.length > 0 ? fetchResult[0][nextColumnName] : null;
-
-//       // SQL query to update the current column with the path of the next column
-//       const updateSql = `
-//           UPDATE ${courseName}
-//           SET ${currentColumnName} = ?
-//           WHERE student_id = ?
-//       `;
-
-//       // Execute the SQL query to update the current column with the path of the next column
-//       db.query(updateSql, [nextImagePath, studentId], (updateErr, updateResult) => {
-//         if (updateErr) {
-//           console.error('Error updating image column:', updateErr);
-//           res.status(500).json({ error: 'Internal Server Error' });
-//         } else {
-//           console.log('Image column updated successfully:', updateResult);
-//         }
-//       });
-//     });
-//   }
-
-//   // Set the last column (pic_5) to NULL
-//   const lastColumnName = 'pic_5';
-//   const nullSql = `
-//       UPDATE ${courseName}
-//       SET ${lastColumnName} = NULL
-//       WHERE student_id = ?
-//   `;
-
-//   // Execute the SQL query to set the last column to NULL
-//   db.query(nullSql, [studentId], (nullErr, nullResult) => {
-//     if (nullErr) {
-//       console.error('Error setting last column to NULL:', nullErr);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//     } else {
-//       console.log('Last column set to NULL successfully:', nullResult);
-//       res.json({ message: 'Image deleted successfully' });
-//     }
-//   });
-// });
-
-
-// router.post('/delete_image', (req, res) => {
-//   const { courseName, studentId, imageNumber } = req.body;
-
-//   // Construct the column name based on the image number
-//   const columnName = `pic_${imageNumber}`;
-//   console.log(`Image number is ${imageNumber}`)
-//   // Start from the deleted column up to the second last column
-//   for (let i = imageNumber; i < 5; i++) {
-//     const currentColumnName = `pic_${i}`;
-//     const nextColumnName = `pic_${i + 1}`;
-
-//     // SQL query to fetch the value of the next column
-//     const fetchNextImageSql = `
-//         SELECT ${nextColumnName}
-//         FROM ${courseName}
-//         WHERE student_id = ?
-//     `;
-
-//     // Execute the SQL query to fetch the value of the next column
-//     db.query(fetchNextImageSql, [studentId], (fetchErr, fetchResult) => {
-//       if (fetchErr) {
-//         console.error('Error fetching next image path:', fetchErr);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//         return;
-//       }
-//       console.log("fetch",fetchResult);
-
-//       // Get the path of the next image from the fetched result
-//       const nextImagePath = fetchResult.length > 0 ? fetchResult[0][nextColumnName] : null;
-//       console.log("img",nextImagePath);
-//       // SQL query to update the current column with the path of the next column
-//       const updateSql = `
-//           UPDATE ${courseName}
-//           SET ${currentColumnName} = ?
-//           WHERE student_id = ?
-//       `;
-
-//       // Execute the SQL query to update the current column with the path of the next column
-//       db.query(updateSql, [nextImagePath, studentId], (updateErr, updateResult) => {
-//         if (updateErr) {
-//           console.error('Error updating image column:', updateErr);
-//           res.status(500).json({ error: 'Internal Server Error' });
-//         } else {
-//           console.log('Image column updated successfully:', updateResult);
-//         }
-//       });
-//     });
-//   }
-
-//   // Set the last column (pic_5) to NULL
-//   const lastColumnName = 'pic_5';
-//   const nullSql = `
-//       UPDATE ${courseName}
-//       SET ${lastColumnName} = NULL
-//       WHERE student_id = ?
-//   `;
-
-//   // Execute the SQL query to set the last column to NULL
-//   db.query(nullSql, [studentId], (nullErr, nullResult) => {
-//     if (nullErr) {
-//       console.error('Error setting last column to NULL:', nullErr);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//     } else {
-//       console.log('Last column set to NULL successfully:', nullResult);
-//       res.json({ message: 'Image deleted successfully' });
-//     }
-//   });
-// });
-
-//shru
-// router.post('/delete_image', (req, res) => {
-//   const { courseName, studentId, imageNumber,year,month,date } = req.body;
-
-//   // Construct the column name based on the image number
-//   const columnName = `pic_${imageNumber}`;
-//   console.log(studentId);
-//   // Start from the deleted column up to the second last column
-//   for (let i = imageNumber; i < 5; i++) {
-//     const currentColumnName = `pic_${i}`;
-//     const nextColumnName = `pic_${i + 1}`;
-
-//     // SQL query to fetch the value of the next column
-//     const fetchNextImageSql = `
-//         SELECT ${nextColumnName}
-//         FROM ${courseName}
-//         WHERE student_id = ? and attendance_date = '${year}-${month}-${date}'
-//     `;
-//     console.log(i,fetchNextImageSql);
-
-//     // Execute the SQL query to fetch the value of the next column
-//     db.query(fetchNextImageSql, [studentId], (fetchErr, fetchResult) => {
-//       if (fetchErr) {
-//         console.error('Error fetching next image path:', fetchErr);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//         return;
-//       }
-//       console.log("fetch ",fetchResult);
-
-//       // Get the path of the next image from the fetched result
-//       const nextImagePath = fetchResult.length > 0 ? fetchResult[0][nextColumnName] : null;
-//       console.log(`Next image path ${nextImagePath}`)
-//       // SQL query to update the current column with the path of the next column
-//       const updateSql = `
-//           UPDATE ${courseName}
-//           SET ${currentColumnName} = ?
-//           WHERE student_id = ? and attendance_date = '${year}-${month}-${date}'
-//       `;
-//       console.log("update",updateSql);
-
-//       // Execute the SQL query to update the current column with the path of the next column
-//       db.query(updateSql, [nextImagePath, studentId], (updateErr, updateResult) => {
-//         if (updateErr) {
-//           console.error('Error updating image column:', updateErr);
-//           res.status(500).json({ error: 'Internal Server Error' });
-//         } else {
-//           console.log('Image column updated successfully:', updateResult);
-//         }
-//       });
-//     });
-//   }
-
-//   // Set the last column (pic_5) to NULL
-//   const lastColumnName = 'pic_5';
-//   const nullSql = `
-//       UPDATE ${courseName}
-//       SET ${lastColumnName} = NULL
-//       WHERE student_id = ? and attendance_date = '${year}-${month}-${date}'
-//   `;
-
-//   // Execute the SQL query to set the last column to NULL
-//   db.query(nullSql, [studentId], (nullErr, nullResult) => {
-//     if (nullErr) {
-//       console.error('Error setting last column to NULL:', nullErr);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//     } else {
-//       console.log('Last column set to NULL successfully:', nullResult);
-//       res.json({ message: 'Image deleted successfully' });
-// }
-// });
-// });
-
-
-//Working code
-
-
-// router.post('/delete_image', (req, res) => {
-//   const { courseName, studentId, imageNumber, year, month, date } = req.body;
-
-//   // Construct the column names based on the item number
-//   const picColumnName = `pic_${imageNumber}`;
-//   const vecColumnName = `vector_${imageNumber}`;
-  
-//   // Start from the deleted column up to the second last column
-//   for (let i = imageNumber; i < 5; i++) {
-//     const currentPicColumnName = `pic_${i}`;
-//     const currentVecColumnName = `vector_${i}`;
-//     const nextPicColumnName = `pic_${i + 1}`;
-//     const nextVecColumnName = `vector_${i + 1}`;
-
-//     // SQL query to fetch the values of the next image and vector columns
-//     const fetchNextDataSql = `
-//         SELECT ${nextPicColumnName}, ${nextVecColumnName}
-//         FROM ${courseName}
-//         WHERE student_id = ? and attendance_date = '${year}-${month}-${date}'
-//     `;
-    
-//     // Execute the SQL query to fetch the values of the next image and vector columns
-//     db.query(fetchNextDataSql, [studentId], (fetchErr, fetchResult) => {
-//       if (fetchErr) {
-//         console.error('Error fetching next data:', fetchErr);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//         return;
-//       }
-
-//       // Get the values of the next image and vector from the fetched result
-//       const nextImage = fetchResult.length > 0 ? fetchResult[0][nextPicColumnName] : null;
-//       const nextVector = fetchResult.length > 0 ? fetchResult[0][nextVecColumnName] : null;
-
-//       // SQL query to update the current image and vector columns with the values of the next columns
-//       const updateSql = `
-//           UPDATE ${courseName}
-//           SET ${currentPicColumnName} = ?, ${currentVecColumnName} = ?
-//           WHERE student_id = ? and attendance_date = '${year}-${month}-${date}'
-//       `;
-
-//       // Execute the SQL query to update the current image and vector columns with the values of the next columns
-//       db.query(updateSql, [nextImage, nextVector, studentId], (updateErr, updateResult) => {
-//         if (updateErr) {
-//           console.error('Error updating columns:', updateErr);
-//           res.status(500).json({ error: 'Internal Server Error' });
-//         } else {
-//           console.log('Columns updated successfully:', updateResult);
-//         }
-//       });
-//     });
-//   }
-
-//   // Set the last columns (pic_5 and vec_5) to NULL
-//   const lastPicColumnName = 'pic_5';
-//   const lastVecColumnName = 'vector_5';
-//   const nullSql = `
-//       UPDATE ${courseName}
-//       SET ${lastPicColumnName} = NULL, ${lastVecColumnName} = NULL
-//       WHERE student_id = ? and attendance_date = '${year}-${month}-${date}'
-//   `;
-
-//   // Execute the SQL query to set the last columns to NULL
-//   db.query(nullSql, [studentId], (nullErr, nullResult) => {
-//     if (nullErr) {
-//       console.error('Error setting last columns to NULL:', nullErr);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//     } else {
-//       console.log('Last columns set to NULL successfully:', nullResult);
-      
-//       res.json({ message: 'Image and vector deleted successfully' });
-//     }
-//   });
-// });
-
-//most -recent
 router.post('/delete_image', (req, res) => {
   const { courseName, studentId, imageNumber, year, month, date } = req.body;
 
-  // Construct the column name based on the image number
   const columnName = `pic_${imageNumber}`;
 
-  // Start from the deleted column up to the second last column
   for (let i = imageNumber; i < 5; i++) {
     const currentColumnName = `pic_${i}`;
     const nextColumnName = `pic_${i + 1}`;
-
-    // SQL query to fetch the value of the next column
     const fetchNextImageSql = `
       SELECT ${nextColumnName}
       FROM ${courseName}
       WHERE student_id = ? and attendance_date = '${year}-${month}-${date}'
     `;
 
-    // Execute the SQL query to fetch the value of the next column
     db.query(fetchNextImageSql, [studentId], (fetchErr, fetchResult) => {
       if (fetchErr) {
         console.error('Error fetching next image path:', fetchErr);
         res.status(500).json({ error: 'Internal Server Error' });
         return;
       }
-
-      // Get the path of the next image from the fetched result
       const nextImagePath = fetchResult.length > 0 ? fetchResult[0][nextColumnName] : null;
-
-      // SQL query to update the current column with the path of the next column
       const updateSql = `
         UPDATE ${courseName}
         SET ${currentColumnName} = ?
         WHERE student_id = ? and attendance_date = '${year}-${month}-${date}'
       `;
-
-      // Execute the SQL query to update the current column with the path of the next column
       db.query(updateSql, [nextImagePath, studentId], (updateErr, updateResult) => {
         if (updateErr) {
           console.error('Error updating image column:', updateErr);
@@ -618,7 +254,6 @@ router.post('/delete_image', (req, res) => {
     });
   }
 
-  // Set the last column (pic_5) to NULL
   const lastColumnName = 'pic_5';
   const nullSql = `
     UPDATE ${courseName}
@@ -626,7 +261,6 @@ router.post('/delete_image', (req, res) => {
     WHERE student_id = ?  and attendance_date = '${year}-${month}-${date}'
   `;
 
-  // Execute the SQL query to set the last column to NULL
   db.query(nullSql, [studentId], (nullErr, nullResult) => {
     if (nullErr) {
       console.error('Error setting last column to NULL:', nullErr);
@@ -634,7 +268,6 @@ router.post('/delete_image', (req, res) => {
     } else {
       console.log('Last column set to NULL successfully:', nullResult);
 
-      // Check if all images are null for the student on the given date
 const checkAllImagesNullSql = `
 SELECT 
   CASE 
@@ -645,7 +278,6 @@ FROM ${courseName}
 WHERE student_id = ? AND attendance_date = '${year}-${month}-${date}'
 `;
 
-// Execute the SQL query to check if all images are null
 db.query(checkAllImagesNullSql, [studentId], (checkErr, checkResult) => {
 if (checkErr) {
   console.error('Error checking if all images are null:', checkErr);
@@ -654,15 +286,13 @@ if (checkErr) {
   const allNull = checkResult.length > 0 ? checkResult[0].all_null : 0;
   console.log('Check Result:', checkResult);
   console.log('All Null:', allNull);
-  if (allNull === 1) { // All images are null
-    // SQL query to update student_id to 'A'
+  if (allNull === 1) {
     const updateStudentIdSql = `
       UPDATE ${courseName}
       SET p_or_a= 'A'
       WHERE student_id = ? AND attendance_date = '${year}-${month}-${date}'
     `;
     console.log('Update Student ID SQL:', updateStudentIdSql);
-    // Execute the SQL query to update student_id to 'A'
     db.query(updateStudentIdSql, [studentId], (updateIdErr, updateIdResult) => {
       if (updateIdErr) {
         console.error('Error updating student_id:', updateIdErr);
@@ -677,34 +307,21 @@ if (checkErr) {
   }
 }
 });
-
-    }
-  });
+}
+});
 });
 
-
-
-
-
-
 router.get('/professor', (req, res) => {
-  // Extract professor ID from the query parameters
-  // const professorId = req.query.professorId;  //fixing for now
-  // if (!professorId) {
-  //     return res.status(400).send('Professor ID is required');
-  // }
   const professorId = req.email.split("@")[0];
   if (!professorId) {
       return res.status(400).send('Professor ID isrequired');
   }
-  // Fetch courses corresponding to the professor ID from the database
   const sql = `SELECT * FROM professor_courses WHERE professor_id = ?`;
   db.query(sql, [professorId], (err, results) => {
       if (err) {
           console.error('Error fetching courses:', err);
           res.status(500).send('Internal Server Error');
       } else {
-          // Send the fetched courses as JSON response
           res.json(results);
           console.log(results);
       }
@@ -712,13 +329,11 @@ router.get('/professor', (req, res) => {
 });
 
 router.get('/search', (req, res) => {
-  const searchTerm = req.query.q; // Get search term from query string
-  console.log('Search term:', searchTerm); // Log the search term
-  // const professorId=req.query.professorId;
+  const searchTerm = req.query.q; 
+  console.log('Search term:', searchTerm);
   const professorId = req.email.split("@")[0];
-  // SQL query to search for courses
   const sql = `SELECT * FROM professor_courses WHERE course_name LIKE '%${searchTerm}%' and professor_id='${professorId}'`;
-  console.log('SQL query:', sql); // Log the SQL query
+  console.log('SQL query:', sql);
 
   db.query(sql, (err, results) => {
     if (err) {
@@ -726,26 +341,19 @@ router.get('/search', (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
       return;
     }
-    console.log('Search results:', results); // Log the search results
-    res.json(results); // Return search results as JSON
+    console.log('Search results:', results); 
+    res.json(results);
   });
 });
 
 router.get('/student_courses', (req, res) => {
-  // const query = 'SELECT course_name FROM course_information';
   const query = 'SELECT * FROM course_information';
   db.query(query, (err, results) => {
     if (err) throw err;
-    // console.log(res.json(results));
     console.log(results)
     res.json(results);
-    
   });
 });
-
-
-
-
 
 router.post('/student_enroll', (req, res) => {
   const {courseName} = req.body;
@@ -753,30 +361,23 @@ router.post('/student_enroll', (req, res) => {
   console.log(req.name);
   console.log(req.email);
   const studentId=req.email.slice(0,6)
-  // const studentId = req.studentId;
-  // const courseName = req.courseName;
 
-  // console.log(courseName);
   console.log(studentId);
 
-  // Check if the student is already enrolled in the selected course
   const checkQuery = 'SELECT * FROM student_enrolment WHERE student_id = ? AND course_id = ?';
   db.query(checkQuery, [studentId, courseName], (err, result) => {
     if (err) {
       console.error('Error checking enrolment:', err);
       res.status(500).json({ error: 'Error enrolling student' });
     } else if (result.length > 0) {
-      // Student is already enrolled in the selected course
       res.status(200).json({ message: `You are already enrolled in the ${courseName} course` });
     } else {
-      // Insert the selected course and student ID into the student_enrolment table
       const query = 'INSERT INTO student_enrolment (student_id, course_id) VALUES (?, ?)';
       db.query(query, [studentId, courseName], (err, result) => {
         if (err) {
           console.error('Error inserting data:', err);
           res.status(500).json({ error: 'Error enrolling student' });
         } else {
-          // Send a success message to the client
           res.status(200).json({ message: `You have enrolled in the ${courseName} course` });
         }
       });
@@ -791,7 +392,6 @@ router.get('/student_courses_display', (req, res) => {
   if (!studentId) {
     return res.status(400).json({ error: 'Missing studentId' });
   }
-
   const query = `
   SELECT course_id from student_enrolment WHERE student_id = ?
   `;
@@ -801,7 +401,6 @@ router.get('/student_courses_display', (req, res) => {
       console.error('Error fetching student courses:', err);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
-
     console.log('Query results:', results);
     res.json(results);
   });
@@ -828,10 +427,6 @@ router.post('/student_upload_image', upload.single('image'), async (req, res) =>
     let temp = parts.split("IIT Mandi");
     let studentname = temp[0].trim();
     const studentId=req.email.slice(0,6);
-    // const studentId= 'b22222'
-    // let studentname= 'Shruti Sahu'
-    // let studentId = 'b22132';
-    // console.log(extracted)
     const imageBuffer = req.file.buffer;
     console.log("hi i am here");
     console.log(studentname);
@@ -855,7 +450,6 @@ router.post('/student_upload_image', upload.single('image'), async (req, res) =>
     let formattedDateTime = `${currentYear}-${currentMonth}_${currentDay}_${currentHour}_${currentMinute}_${currentSecond}`;
     fs.writeFileSync(`./public/images/${studentId}_${formattedDateTime}_ground_truth.jpg`, imageBuffer);
     let p = `public/images/${studentId}_${formattedDateTime}_ground_truth.jpg`;
-    // Insert the data into the MySQL table
     db.query(
       'INSERT INTO student(student_id, Name_of_student, Student_vector, pic) VALUES (?, ?, ?, ?)',
       [studentId, studentname, JSON.stringify(response.data), p],
@@ -919,9 +513,6 @@ router.post('/unenrol', (req, res) => {
 
 router.get('/attendance_for_student', (req, res) => {
   const courseName = req.query.courseName;
-  // if (!courseName || courseName.trim() === '') {
-  //   return res.status(400).json({ error: 'Invalid course name' });
-  // }
   console.log(`This is coursename ${courseName}`)
   const tableName = `${courseName.replace(/\s+/g, '_').replace(/\W/g, '_')}`;
   const studentId=req.email.slice(0,6);
@@ -941,15 +532,12 @@ router.get('/attendance_for_student', (req, res) => {
 
 router.get('/calender-attendance', (req, res) => {
   const { courseName } = req.query;
-
-  // Get today's date
   const today = new Date();
   const year = today.getFullYear();
   const month = (today.getMonth() + 1).toString().padStart(2, '0');
   const date = today.getDate().toString().padStart(2, '0');
   const currentDate = `${year}-${month}-${date}`;
 
-  // Construct SQL query to fetch attendance data for all dates till today's date
   const sql = `
       SELECT student_id, attendance_date, p_or_a,verified
       FROM ${courseName}
@@ -964,16 +552,13 @@ router.get('/calender-attendance', (req, res) => {
           
                     
             const attendanceData = results.reduce((acc, { student_id, attendance_date, p_or_a ,verified}) => {
-              // Convert date to a string in YYYY-MM-DD format
               const formattedDate = attendance_date.toISOString().split('T')[0];
-              
-              // Initialize the date object if not exists
+
               acc[formattedDate] = acc[formattedDate] || {};
-              
-              // Add attendance data for the student
+            
               acc[formattedDate][student_id] = p_or_a;
-              // Add verified status
-        acc[formattedDate].verified = verified === '1'; // Assuming 1 represents verified
+
+        acc[formattedDate].verified = verified === '1';
               return acc;
           }, {});
           console.log(attendanceData);
@@ -1000,7 +585,6 @@ router.post('/check_appload',async (req,res)=>{
     }
 });
 
-// router.post('/check_attendance_date', upload.single('video'), async (req, res) => {
 router.post('/check_attendance_date', upload.array('images'), async (req, res) => {
   const { course_name, date } = req.body;
   console.log("Endpoint has been hit")
@@ -1011,7 +595,6 @@ router.post('/check_attendance_date', upload.array('images'), async (req, res) =
           res.status(500).json({ error: 'Internal server error' });
           return;
       }
-      // Check if there are any entries for the given date
       const count = results[0].count;
       console.log("i am checking the date")
       if (count > 0) {
@@ -1022,53 +605,21 @@ router.post('/check_attendance_date', upload.array('images'), async (req, res) =
   });
 })
 
-// app.post('/appload_image',async (req,res)=>{
-// router.post('/appload_video', upload.array('images'), async (req, res) => {
 router.post('/appload_video', upload.single('video'), async (req, res) => {
   try {
     const { course_name, date } = req.body;
     const videoBuffer = req.file.buffer;
-    // Process the video buffer here...
     console.log("hi i am here");
     console.log(date);
     const videoBase64 = videoBuffer.toString('base64');
 
-    // Send the video to the specified endpoint
     const response = await axios.post('http://127.0.0.1:5000/upload_video', {
       video: videoBase64
     });
-    // console.log(data);
-    // const { course_name, image} = req.body;
-    // // const imageBuffer = Buffer.from(image, 'base64');
-    // // fs.writeFileSync('uploaded_image.jpg', imageBuffer)
-    //     const response = await axios.post('http://127.0.0.1:5000/upload', {
-    //       image: imageBuffer.toString('base64')
-    //     })
-    //     .catch(function(error){
-    //       console.log(error.message)
-    //     })
         console.log(response.data);
         let data  = response.data;
-        // console.log(data)
-      // const { course_name, date } = req.body;
-      // const imageBuffer = req.file.buffer;
-      // console.log("hi i am here");
-      // console.log(date);
-      // const images = req.files.map(file => file.buffer.toString('base64'));
-      // let data = []; // Initialize an empty array to store responses
-  
-      // // Process each image buffer here...
-      // for (let i = 0; i < images.length; i++) {
-      //   const response = await axios.post('http://127.0.0.1:5000/upload', {
-      //     image: images[i]
-      //   });
-      //   data = data.concat(response.data); // Append response to data array
-      //   // console.log('Image uploaded:', response.data);
-      // }
-      // console.log(data);
-      hashMap2 = {};
+        hashMap2 = {};
           
-          // const sql = `SELECT * FROM student`
           const sql = `
           SELECT s.*
           FROM student s
@@ -1121,7 +672,6 @@ router.post('/appload_video', upload.single('video'), async (req, res) => {
           })
           console.log(hashMap);
           console.log("here here")
-          // data.sort((a, b) => b[0] - a[0]);
           console.log(data);
           for (let i = 0; i < data.length; i++) {
           let key = data[i][1];
@@ -1133,12 +683,11 @@ router.post('/appload_video', upload.single('video'), async (req, res) => {
                       sortedList = sortedList.slice(0, 5);
                   }
                   hashMap[key] = sortedList;
-                  // hashMap[key].push(data[i][0]); 
               }
           }
           let currentDate = new Date();
           let currentYear = currentDate.getFullYear();
-          let currentMonth = currentDate.getMonth() + 1; // Months are zero-based
+          let currentMonth = currentDate.getMonth() + 1; 
           let currentDay = currentDate.getDate();
           let currentHour = currentDate.getHours();
           let currentMinute = currentDate.getMinutes();
@@ -1170,69 +719,33 @@ router.post('/appload_video', upload.single('video'), async (req, res) => {
                 console.log(result);
               });
             } 
-          // db.end();
-          // res.send("hashMap");
-      })
-              // console.log(k);
-              // try {
-              //   const response = axios.post('/api/mark_attendence', {
-              //     course_name : course_name,
-              //     data : k
-              //   });
-              // }
-              // catch(error){
-              //   // console.error(error.message);
-              // }
           })
-  
-          // face_images.forEach((encodedImage, index) => {
-          //     const decodedImage = Buffer.from(encodedImage, 'base64');
-          //     fs.writeFileSync(`face_image_${index}.jpg`, decodedImage);
-          // });
         } 
         catch (error) {
-          // console.error(error);
       }
       res.send("working")
   });
 
 
 router.post('/appload_images', upload.array('images'), async (req, res) => {
-  // router.post('/appload_image', upload.single('image'), async (req, res) => {
     try {
       const { course_name, date } = req.body;
-      // const imageBuffer = req.file.buffer;
       console.log("hi i am here");
       console.log(date);
       console.log(course_name)
       const images = req.files.map(file => file.buffer.toString('base64'));
-      let data = []; // Initialize an empty array to store responses
-  
-      // Process each image buffer here...
+      let data = [];
+
       for (let i = 0; i < images.length; i++) {
         const response = await axios.post('http://127.0.0.1:5000/upload', {
           image: images[i]
         });
-        data = data.concat(response.data); // Append response to data array
-        // console.log('Image uploaded:', response.data);
+        data = data.concat(response.data); 
       }
 
       console.log(data);
-      // const { course_name, image} = req.body;
-      // const imageBuffer = Buffer.from(image, 'base64');
-      // fs.writeFileSync('uploaded_image.jpg', imageBuffer)
-          // const response = await axios.post('http://127.0.0.1:5000/upload', {
-          //   image: imageBuffer.toString('base64')
-          // })
-          // .catch(function(error){
-          //   console.log(error.message)
-          // })
-          // // console.log(response.data);
-          // let data  = response.data;
-          // console.log(data)
           hashMap2 = {};
-          
-          // const sql = `SELECT * FROM student`
+
           const sql = `
           SELECT s.*
           FROM student s
@@ -1240,7 +753,6 @@ router.post('/appload_images', upload.array('images'), async (req, res) => {
           WHERE se.course_id = "${course_name}"
           `
 
-  
           db.query(sql, (err,result) =>{
               if(err) return console.log(err.message);
               console.log(result);
@@ -1286,7 +798,6 @@ router.post('/appload_images', upload.array('images'), async (req, res) => {
           })
           console.log(hashMap);
           console.log("here here")
-          // data.sort((a, b) => b[0] - a[0]);
           console.log(data);
           for (let i = 0; i < data.length; i++) {
           let key = data[i][1];
@@ -1298,12 +809,11 @@ router.post('/appload_images', upload.array('images'), async (req, res) => {
                       sortedList = sortedList.slice(0, 5);
                   }
                   hashMap[key] = sortedList;
-                  // hashMap[key].push(data[i][0]); 
               }
           }
           let currentDate = new Date();
           let currentYear = currentDate.getFullYear();
-          let currentMonth = currentDate.getMonth() + 1; // Months are zero-based
+          let currentMonth = currentDate.getMonth() + 1; 
           let currentDay = currentDate.getDate();
           let currentHour = currentDate.getHours();
           let currentMinute = currentDate.getMinutes();
@@ -1335,33 +845,13 @@ router.post('/appload_images', upload.array('images'), async (req, res) => {
                 console.log(result);
               });
             } 
-          // db.end();
-          // res.send("hashMap");
-      })
-              // console.log(k);
-              // try {
-              //   const response = axios.post('/api/mark_attendence', {
-              //     course_name : course_name,
-              //     data : k
-              //   });
-              // }
-              // catch(error){
-              //   // console.error(error.message);
-              // }
           })
-  
-          // face_images.forEach((encodedImage, index) => {
-          //     const decodedImage = Buffer.from(encodedImage, 'base64');
-          //     fs.writeFileSync(`face_image_${index}.jpg`, decodedImage);
-          // });
-        } 
+        })
+       } 
         catch (error) {
-          // console.error(error);
       }
       res.send("working")
   });
-
-
 
 
 router.post('/process_vector', (req,res)=>{
@@ -1497,7 +987,6 @@ router.post('/process_vector', (req,res)=>{
 
 })
 
-// for marking attendence based on confidence score list
 router.post('/mark_attendence', (req,res)=> {
     const { course_name, data } = req.body;
     const sql = `SELECT student_id FROM student_enrolment WHERE course_id='${course_name}'`
@@ -1510,8 +999,6 @@ router.post('/mark_attendence', (req,res)=> {
             hashMap[row.student_id] = [[Number.MAX_SAFE_INTEGER,""],[Number.MAX_SAFE_INTEGER,""],[Number.MAX_SAFE_INTEGER,""],[Number.MAX_SAFE_INTEGER,""],[Number.MAX_SAFE_INTEGER,""]];
         })
         console.log(hashMap);
-        // data.sort((a, b) => b[0] - a[0]);
-        // console.log(data);
         for (let i = 0; i < data.length; i++) {
         let key = data[i][1];
         if (hashMap.hasOwnProperty(key)) 
@@ -1522,7 +1009,6 @@ router.post('/mark_attendence', (req,res)=> {
                     sortedList = sortedList.slice(0, 5);
                 }
                 hashMap[key] = sortedList;
-                // hashMap[key].push(data[i][0]); 
             }
         }
         console.log(hashMap);
@@ -1544,9 +1030,6 @@ router.post('/mark_attendence', (req,res)=> {
         db.end();
         res.send("hashMap");
     })
-    
-
-    
 })
 
 // to add a new course attendence table for every new course
