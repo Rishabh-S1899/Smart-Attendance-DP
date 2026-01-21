@@ -6,7 +6,7 @@ const axios = require('axios');
 const multer  = require('multer');
 const path = require('path');
 const upload = multer();
-const { authenticate } = require('./middleware')
+const { authenticate } = require('./authmiddleware')
 const admin = require('firebase-admin')
 const dotenv = require('dotenv')
 
